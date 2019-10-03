@@ -1,107 +1,142 @@
+#En este trabajo practico se representara a las personas y con su respectiva inforacion de la siguiente forma
+#Persona(Nombre,Apellido,Localidad,Edad,Sexo,GeneroInteres)
+#Persona(str,str,str,int,str,str)
+#A su vez representamos a los candidatos como un diccionario, en el cual las keys son la ubicacion en la que se encuantran las personas
+#y el valor dentro del campo es un diccionario en el cual guardaremos otro diccionario con 3 keys las cuales representaran los distintos gurpos de personas
+#ordenados segun la edad que tienen. Para luedo dentro de ellas almacenar otro diccionario con 6 keys en las que se agrupan a las personas 
+# segun su sexo y su interes.
+#candidatos{Localidad:{'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}}
+
+#Dada una lista y una cantida, verifica si la lista posee mas elementos que la cantidad dada
+def Length(lista,cant,contador = 0):
+    if(contador > cant ):
+        return True
+    elif(lista == []) :
+        return False
+    else :
+        return Length (lista[1:],cant, contador +1)
+
+
+#Dada una lista de personas, guarda en un archivo las personas que no pueden formar una pareja y
+#el porque.
 def ImprimeSingles(NoParejas):
-    SalidaSingles = open("SalidaSingles.txt", "w+")
+    ArchivoSalidaSolteros = input("Ingrese nombre del archivo que contendra a los solteros :")
+    SalidaSingles = open(ArchivoSalidaSolteros, "w+")
     for p in NoParejas:
-        string = p['Nombre'] + ", " + p['Apellido'] + ", " + str(p['Edad']) + ", " + p['Localidad'] + ", NO TIENE PAREJA POR "
-        if p['Edad'] <= 10:
+        string = p[0] + ", " + p[1] + ", " + str(p[3]) + ", " + p[2] + ", NO TIENE PAREJA POR "
+        if p[3] <= 10:
             SalidaSingles.write(string  + "SER MENOR DE 11 AÑOS" + "\n")
-        elif p['GeneroInteres'] == "N":
+        elif p[5] == "N":
             SalidaSingles.write(string + "NO TENER INTERES" + "\n")
         else:
             SalidaSingles.write(string + "NO DISPONIBILIDAD DE PERSONAS" + "\n")
     SalidaSingles.close()
+#Dada una Persona y un diccionario que continen a las personas que vivien es dicha localidad
+#agrego a dicha persona a la lista que corresponde segun su edad y orientacion sexual
 
 def AgregaPersona(Persona, DictLocalidad):
-    if Persona['Edad'] >= 18:
-        DictLocalidad['18+'][Persona['Genero'] + Persona['GeneroInteres']].append(Persona)
-    elif Persona['Edad'] >= 15:
-        DictLocalidad['15a17'][Persona['Genero'] + Persona['GeneroInteres']].append(Persona)
+    if Persona[3] >= 18:
+        DictLocalidad['18+'][Persona[4] + Persona[5]].append(Persona)
+    elif Persona[3] >= 15:
+        DictLocalidad['15a17'][Persona[4] + Persona[5]].append(Persona)
     else:
-        DictLocalidad['11a14'][Persona['Genero'] + Persona['GeneroInteres']].append(Persona)
+        DictLocalidad['11a14'][Persona[4] + Persona[5]].append(Persona)
     return DictLocalidad
-
+#Dada una persona y un diccionario que contiene a todos los candidatos a formar parejas
+#Agrega la persona al campo del diccionario  de la localidad a la que pertenece
+#  
 def Filtrado(Persona, Candidatos):
-    if  Persona["Localidad"] in Candidatos.keys() :
-        Candidatos[Persona["Localidad"]] = AgregaPersona(Persona, Candidatos[Persona["Localidad"]])
+    if  Persona[2] in Candidatos.keys() :
+        Candidatos[Persona[2]] = AgregaPersona(Persona, Candidatos[Persona[2]])
     else :
-        Candidatos[Persona["Localidad"]] = {'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}
-        Candidatos[Persona["Localidad"]] = AgregaPersona(Persona, Candidatos[Persona["Localidad"]])
+        Candidatos[Persona[2]] = {'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}
+        Candidatos[Persona[2]] = AgregaPersona(Persona, Candidatos[Persona[2]])
     return Candidatos
-
+#Dado un archivo, una lista con personas y un genero, imprime en el archivo dado las parejas que se formaron
+#En este caso todas las parejas van a ser del mismo sexo
 def MatchingHomosexuals(Salida, listPersonas, generoPersonas):
-    while len(listPersonas[generoPersonas + generoPersonas]) > 1:
+    while Length(listPersonas[generoPersonas + generoPersonas],1) :
         Persona1 = listPersonas[generoPersonas + generoPersonas][0]
         Persona2 = listPersonas[generoPersonas + generoPersonas][1]
         listPersonas[generoPersonas + generoPersonas].pop(0)
         listPersonas[generoPersonas + generoPersonas].pop(0)
-        Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
-    if len(listPersonas[generoPersonas + generoPersonas]) == 1 and len(listPersonas[generoPersonas + 'A']) > 0:
+        Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
+    if len(listPersonas[generoPersonas + generoPersonas]) == 1 and Length(listPersonas[generoPersonas + 'A'],0):
         Persona1 = listPersonas[generoPersonas + generoPersonas][0]
         listPersonas[generoPersonas + generoPersonas].pop(0)
         Persona2 = listPersonas[generoPersonas + 'A'][0]
         listPersonas[generoPersonas + 'A'].pop(0)
-        Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
+        Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     return listPersonas
-
+#Dado un archivo, una lista con personas, imprime en el archivo dado las parejas que se formaron
+#En este caso todas las parejas van a ser parejas heterosexuales
 def MatchingHeterosexuals(Salida, listPersonas):
-    while len(listPersonas['MF']) > 0 and len(listPersonas['FM']) > 0:
+    while Length(listPersonas['MF'], 0)  and Length(listPersonas['FM'],0):
         Persona1 = listPersonas['MF'][0]
         Persona2 = listPersonas['FM'][0]
         listPersonas['MF'].pop(0)
         listPersonas['FM'].pop(0)
-        Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
-    if len(listPersonas['MF']) > 0:
-        while len(listPersonas['MF']) > 0 and len(listPersonas['FA']) > 0:
+        Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
+    if Length(listPersonas['MF'],0) :
+        while Length(listPersonas['MF'],0)  and Length(listPersonas['FA'],0):
             Persona1 = listPersonas['MF'][0]
             Persona2 = listPersonas['FA'][0]
             listPersonas['MF'].pop(0)
             listPersonas['FA'].pop(0)
-            Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
-    elif len(listPersonas['FM']) > 0:
-        while len(listPersonas['FM']) > 0 and len(listPersonas['MA']) > 0:
+            Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
+    elif Length(listPersonas['FM'], 0) :
+        while Length(listPersonas['FM'], 0)  and Length(listPersonas['MA'], 0):
             Persona1 = listPersonas['FM'][0]
             Persona2 = listPersonas['MA'][0]
             listPersonas['FM'].pop(0)
             listPersonas['MA'].pop(0)
-            Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
+            Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     return listPersonas
-
+#Dado un archivo, una lista con personas, imprime en el archivo dado las parejas que se formaron
+#En esta funcion, el resultado seran todas parejas de bisexuales
 def MatchingBisexuals(Salida, listPersonas):
-    while len(listPersonas['MA']) > 1:
+    while Length(listPersonas['MA'],1) :
         Persona1 = listPersonas['MA'][0]
         Persona2 = listPersonas['MA'][1]
         listPersonas['MA'].pop(0)
         listPersonas['MA'].pop(0)
-        Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
-    while len(listPersonas['FA']) > 1:
+        Salida.write(Persona1[0] + ", " + Persona1[1]+ ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
+    while Length(listPersonas['FA'],1) :
         Persona1 = listPersonas['FA'][0]
         Persona2 = listPersonas['FA'][1]
         listPersonas['FA'].pop(0)
         listPersonas['FA'].pop(0)
-        Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
+        Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     if(len(listPersonas['FA']) == 1 and len(listPersonas['MA']) == 1):
         Persona1 = listPersonas['MA'][0]
         Persona2 = listPersonas['FA'][0]
         listPersonas['MA'].pop(0)
         listPersonas['FA'].pop(0)
-        Salida.write(Persona1['Nombre'] + ", " + Persona1['Apellido'] + ", " + str(Persona1['Edad']) + " - " + Persona2['Nombre'] + ", " + Persona2['Apellido'] + ", " + str(Persona2['Edad']) + " - " + Persona2['Localidad'] + "\n")
+        Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     return listPersonas
-
-def MatchingFunctionAux(Salida, listPersonas):
-    listPersonas = MatchingHomosexuals(Salida, listPersonas, 'M')
-    listPersonas = MatchingHomosexuals(Salida, listPersonas, 'F')
-    listPersonas = MatchingHeterosexuals(Salida, listPersonas)
-    listPersonas = MatchingBisexuals(Salida, listPersonas)
-    return listPersonas
-
+#Dada un archivo y la lista de candidatos a formar pareje, llama a una funcion auxiliar para crear 
+# las parejas dependiendo de la secxualidad de las personas en la lista
+# y devuelve las personas que se quedaron sin
 def MatchingFunction(Salida, Candidatos):
     for key, value in Candidatos.items():
-        Candidatos[key]['11a14'] = MatchingFunctionAux(Salida, value['11a14'])
-        Candidatos[key]['15a17'] = MatchingFunctionAux(Salida, value['15a17'])
-        Candidatos[key]['18+'] = MatchingFunctionAux(Salida, value['18+'])
+        Candidatos[key]['11a14'] = MatchingHomosexuals(Salida, value['11a14'], 'M') 
+        Candidatos[key]['11a14'] = MatchingHomosexuals(Salida, value['11a14'], 'F')
+        Candidatos[key]['11a14'] = MatchingHeterosexuals(Salida, value['11a14']) 
+        Candidatos[key]['11a14'] = MatchingBisexuals(Salida, value['11a14'])
+        Candidatos[key]['15a17'] = MatchingHomosexuals(Salida, value['15a17'], 'M') 
+        Candidatos[key]['15a17'] = MatchingHomosexuals(Salida, value['15a17'], 'F')
+        Candidatos[key]['15a17'] = MatchingHeterosexuals(Salida, value['15a17']) 
+        Candidatos[key]['15a17'] = MatchingBisexuals(Salida, value['15a17'])
+        Candidatos[key]['18+'] = MatchingHomosexuals(Salida, value['18+'], 'M') 
+        Candidatos[key]['18+'] = MatchingHomosexuals(Salida, value['18+'], 'F')
+        Candidatos[key]['18+'] = MatchingHeterosexuals(Salida, value['18+']) 
+        Candidatos[key]['18+'] = MatchingBisexuals(Salida, value['18+'])
     return Candidatos
 
 if __name__ == "__main__":
-    Entrada = open("ejemplo2.txt","r")
+    ArchivoEntrada = input("Ingrese el nombre del archivo a leer: ")
+    ArchivosParejas = input("Ingrese nombre del archivo que contendra a las parejas: ")
+    Entrada = open(ArchivoEntrada,"r")
     NoParejas = []
     Candidatos = dict()
     if Entrada.mode == 'r':
@@ -111,11 +146,11 @@ if __name__ == "__main__":
             l = l.split(", ")
             l[5] = l[5][0]
             if int(l[3]) <= 10 or l[5] == "N":
-                NoParejas.append({'Nombre': l[0], 'Apellido': l[1], 'Localidad': l[2], 'Edad': int(l[3]), 'Genero': l[4], 'GeneroInteres': l[5]})
+                NoParejas.append(( l[0], l[1], l[2],  int(l[3]), l[4], l[5]))
             else:
-                Persona = {'Nombre': l[0], 'Apellido': l[1], 'Localidad': l[2], 'Edad': int(l[3]), 'Genero': l[4], 'GeneroInteres': l[5]}
+                Persona = ( l[0],l[1],  l[2], int(l[3]), l[4], l[5])
                 Candidatos = Filtrado(Persona,Candidatos)
-        Salida = open("Salida.txt", "w+")
+        Salida = open(ArchivosParejas, "w+")
         Candidatos = MatchingFunction(Salida, Candidatos)
         for key, value in Candidatos.items():
             Solteros11a14 = value['11a14']['MM'] + value['11a14']['MF'] + value['11a14']['MA'] + value['11a14']['FM'] + value['11a14']['FF'] + value['11a14']['FA']
