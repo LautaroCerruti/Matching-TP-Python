@@ -39,4 +39,14 @@ def test_Filtrado():
   assert Filtrado(pesona2,{}) =  resultado2
 
 def test_MatchingHomosexuals():
-  
+  Salida = open("salida-test", "w+")
+  Entrada1 = open("test3-1.txt", "r")
+  Entrada2 = open("test3-2.txt", "r")
+  Lineas1 = Entrada1.readlines()
+  Lineas2 = Entrada2.readlines()  
+  lista1 = eval(Lineas1[0])
+  genero1 = eval(Lineas1[1])
+  lista2 = eval(Lineas1[2])
+  genero2 = eval(Lineas1[3])
+  lista3 = eval(Lineas1[4])
+  genero3 = eval(Lineas1[5])
