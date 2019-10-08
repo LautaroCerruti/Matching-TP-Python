@@ -150,6 +150,10 @@ def MatchingFunction(Salida, Candidatos):
         MatchingBisexuals(Salida, value['18+'])
     return Candidatos
 
+#En el main del programa, que es lo primero que se ejecuta,
+#nos encargaos de pedir los nombres de los archivos de entrada y salida
+#Leer todas las lineas de la entrada y separar las que no pueden formar parejas desde el comienzo
+#Ejecutar todas la funciones correspondientes para poder formar las parejas e imprimir los resulados
 if __name__ == "__main__":
     ArchivoEntrada = input("Ingrese el nombre del archivo a leer: ")
     ArchivosParejas = input("Ingrese nombre del archivo que contendra a las parejas: ")
