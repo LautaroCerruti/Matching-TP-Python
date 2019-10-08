@@ -1,35 +1,42 @@
-import TP as bs
-
+from TP import *
+from pytest import *
 # Casos de test (pytest) para el trabajo practico 1. 
-MujerBi = (EIDA, FONSECA, MONTES DE OCA,20,F,A)
-MujerHomo = (DAISY, ROJAS, MONTES DE OCA,  44, F, F)
-MujerHete = (EIDA, ESPELETA, MONTES DE OCA,  82, F, M)
-HombbreBi = (ALFREDO, MIRANDA, MONTES DE OCA,  76, M, A)
-HombreHomo = (ALVARO, FONSECA,  MONTES DE OCA,  30, M, M)
-HombreHete =(RAMON VICTOR, SALAS, MONTES DE OCA,  82, M, F)
-Menor = (GLADYS, RODRIGUEZ, DESAMPARADOS,  10, F, N)
-Asexual = (MARIA LUISA, RODRIGUEZ, SANTO DOMINGO,  55, F, N)
-
-Lista_Llena = [MujerBi,MujerHomo,MujerHete,HombbreBi]
-
-Candidatos_Vacios = {}
-Candidatos_Lleno = {MONTES DE OCA: [], ROSARIO:[]}
-
-def Length_test():
-    assert bs.Length(Lista_Llena,1) = True
-    assert bs.Length(Lista_Llena,5) = False
-
-def AgregaPersona_test():
-    assert bs.AgregaPersona(MujerBi,Candidatos_Vacios) = {MONTES DE OCA: [MujerBi]}
+Lista_Llena = [1,2,3,4]
 
 
-def Filtrado_test():
+def test_Length():
+  assert Length(Lista_Llena,1) == True
+  assert Length(Lista_Llena,5) == False
 
-def MatchingHomosexuals_test():
+def test_AgregaPersona():
+  Entrada1 = open("test1-1.txt","r")
+  Entrada2 = open("test1-2.txt","r")
+  Lineas1 = Entrada1.readlines()
+  Lineas2 = Entrada2.readlines()
+  persona1 = eval(Lineas1[0]
+  persona2 = eval(Lineas1[1]
+  persona3 = eval(Lineas1[2]
+  resultado1 = eval(Lineas2[0])
+  resultado2 = eval(Lineas2[1])
+  resultado3 = eval(Lineas2[2])
+  assert AgregaPersona(persona1,{persona1[2] : []}) == resultado1
+  assert AgregaPersona(persona2,{persona2[2] : []}) == resultado2
+  assert AgregaPersona(persona3,{persona3[2] : []}) == resultado3
 
-def MatchingHeterosexuals_test():
+def test_Filtrado():
+  Entrada1 = open("test2-1.txt", "r")
+  Entrada2 = open("test2-2.txt", "r")
+  Lineas1 = Entrada1.readlines()
+  Lineas2 = Entrada2.readlines()
+  persona1 = eval(Lineas1[0]
+  candidatos1 = eval(Lineas1[1])
+  persona2 = eval(Lineas1[2]
+  persona3 = eval(Lineas1[3]
+  resultado1 = eval(Lineas2[0])
+  resultado2 = eval(Lineas2[1])
+  resultado3 = eval(Lineas2[2])
+  assert Filtrado(persona1,candidatos1) = resultado1  
+  assert Filtrado(pesona2,{}) =  resultado2
 
-def MatchingBisexuals_test():
-
-def MatchingFunction_test():
-
+def test_MatchingHomosexuals():
+  
