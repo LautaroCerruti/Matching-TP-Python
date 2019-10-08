@@ -20,7 +20,7 @@ def Length_test():
     assert bs.Length(Lista_Llena,5) = False
 
 def AgregaPersona_test():
-    asser bs.AgregaPersona(MujerBi,Candidatos_Vacios) = {MONTES DE OCA: [MujerBi]}
+    assert bs.AgregaPersona(MujerBi,Candidatos_Vacios) = {MONTES DE OCA: [MujerBi]}
 
 
 def Filtrado_test():

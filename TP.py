@@ -1,31 +1,31 @@
 #Trabajo Practico N1, 
 #Integrantes del grupo: Lautaro Cerruti y Alesandro Regolo
-#En el tp, se recibira una lita de personas con datos personales tales como su nombre, aprellido, edad, localidad, etc
-#y se fomrara parejas de 2 persoanas en base a su ubicacion, su edad y su preferencia sexual.
+#En el tp, se recibira una lista de personas con datos personales tales como su nombre, aprellido, edad, localidad, etc
+#y se formara parejas de 2 persoanas en base a su ubicacion, su edad y su preferencia sexual. Se maximizara la cantidad de parejas formadas.
 #La entrada del programa sera un archivo en el cual se almacenara dicha informacion a utilizar.
 
-#La forma a representar a las personas  con su respectiva inforacion en este practico sera de la siguiente forma
-#Persona(Nombre,Apellido,Localidad,Edad,Sexo,GeneroInteres)
+#La forma a representar a las personas  con su respectiva informacion en este practico sera de la siguiente forma
+#Persona(Nombre,Apellido,Localidad,Edad,Genero,GeneroInteres)
 #Persona(str,str,str,int,str,str)
 
 #A su vez representamos a los candidatos como un diccionario, en el cual las keys son la ubicacion en la que se encuantran las personas
 #y el valor dentro del campo es un diccionario en el cual guardaremos otro diccionario con 3 keys las cuales representaran los distintos gurpos de personas
 #ordenados segun la edad que tienen. Para luedo dentro de ellas almacenar otro diccionario con 6 keys en las que se agrupan a las personas 
-# segun su sexo y su interes.
+# segun su Genero y su interes.
 #candidatos{Localidad:{'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}}
 
 #El resultado de este programa sera 2 archivos de salida que contendran, por un lado las parejas formadas y por otro lado las personas
 #que no pudieron formar pareja, especificando el motivo.
 
- #Dada una lista y una cantida, verifica si la lista posee mas elementos que la cantidad dada
- #Length: List, Int, Int -> Bool
+#Length: List -> Int -> Int -> Bool
+#Dada una lista y una cantida, verifica si la lista posee mas elementos que la cantidad dada
 def Length(lista,cant,contador = 0):
     if(contador > cant ):
         return True
     elif(lista == []) :
         return False
     else :
-        return Length (lista[1:],cant, contador +1)
+        return Length(lista[1:],cant, contador +1)
 
 
 #Dada una lista de personas, guarda en un archivo las personas que no pueden formar una pareja y
@@ -43,9 +43,9 @@ def ImprimeSingles(NoParejas):
             SalidaSingles.write(string + "NO DISPONIBILIDAD DE PERSONAS" + "\n")
     SalidaSingles.close()
 
+#AgregaPersona: Tupla(str,str,str,int,str,str) -> Dict() -> Dict()
 #Dada una Persona y un diccionario que continen a las personas que vivien es dicha localidad
 #agrego a dicha persona a la lista que corresponde segun su edad y orientacion sexual
-#AgregaPersona: Tupla(str,str,str,int,str,str)-> Dict()
 def AgregaPersona(Persona, DictLocalidad):
     if Persona[3] >= 18:
         DictLocalidad['18+'][Persona[4] + Persona[5]].append(Persona)
@@ -54,10 +54,12 @@ def AgregaPersona(Persona, DictLocalidad):
     else:
         DictLocalidad['11a14'][Persona[4] + Persona[5]].append(Persona)
     return DictLocalidad
+
+#Representamos la estructura donde se guarda cada persona como el diccionario de candidatos que se menciona mas arriba
+#Filtrado: Tupla(str,str,str,int,str,str) -> Dict() -> Dict()
 #Dada una persona y un diccionario que contiene a todos los candidatos a formar parejas
 #Agrega la persona al campo del diccionario  de la localidad a la que pertenece y de ser necesario 
 #Agrega otra key al diccionario y agrega la persona al campo.
-#  Filtrado: Tupla(str,str,str,int,str,str)-> Dict()
 def Filtrado(Persona, Candidatos):
     if  Persona[2] in Candidatos.keys() :
         Candidatos[Persona[2]] = AgregaPersona(Persona, Candidatos[Persona[2]])
@@ -65,9 +67,11 @@ def Filtrado(Persona, Candidatos):
         Candidatos[Persona[2]] = {'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}
         Candidatos[Persona[2]] = AgregaPersona(Persona, Candidatos[Persona[2]])
     return Candidatos
+
+#MatchingHomosexuals: file -> Dict() -> str -> Dict()
 #Dado un archivo, una lista con personas y un genero, imprime en el archivo dado las parejas que se formaron
-#En este caso todas las parejas van a ser del mismo sexo
-#MatchingHomosexuals: file Arrary str -> Array
+#retorna el diccionario luego de haber borrado las personas que ya fueron emparejadas
+#En este caso todas las parejas van a ser del mismo genero, representado por el string
 def MatchingHomosexuals(Salida, listPersonas, generoPersonas):
     while Length(listPersonas[generoPersonas + generoPersonas],1) :
         Persona1 = listPersonas[generoPersonas + generoPersonas][0]
@@ -82,9 +86,11 @@ def MatchingHomosexuals(Salida, listPersonas, generoPersonas):
         listPersonas[generoPersonas + 'A'].pop(0)
         Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     return listPersonas
+
+#MatchingHeterosexuals:  file -> Dict() -> Dict()
 #Dado un archivo, una lista con personas, imprime en el archivo dado las parejas que se formaron
+#retorna el diccionario luego de haber borrado las personas que ya fueron emparejadas
 #En este caso todas las parejas van a ser parejas heterosexuales
-#MatchingHeterosexuals:  file Arrary  -> Array
 def MatchingHeterosexuals(Salida, listPersonas):
     while Length(listPersonas['MF'], 0)  and Length(listPersonas['FM'],0):
         Persona1 = listPersonas['MF'][0]
@@ -107,9 +113,11 @@ def MatchingHeterosexuals(Salida, listPersonas):
             listPersonas['MA'].pop(0)
             Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     return listPersonas
+
+#MatchingBisexuals: file -> Dict() -> Dict()
 #Dado un archivo, una lista con personas, imprime en el archivo dado las parejas que se formaron
+#retorna el diccionario luego de haber borrado las personas que ya fueron emparejadas
 #En esta funcion, el resultado seran todas parejas de bisexuales
-#MatchingBisexuals: file Array -> Array
 def MatchingBisexuals(Salida, listPersonas):
     while Length(listPersonas['MA'],1) :
         Persona1 = listPersonas['MA'][0]
@@ -130,10 +138,11 @@ def MatchingBisexuals(Salida, listPersonas):
         listPersonas['FA'].pop(0)
         Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")
     return listPersonas
-#Dada un archivo y la lista de candidatos a formar pareje, llama a una funcion auxiliar para crear 
-# las parejas dependiendo de la secxualidad de las personas en la lista
-# y devuelve las personas que se quedaron sin
-# MatchingFunction: file Array -> Dict()
+
+# MatchingFunction: file -> Dict() -> Dict()
+#Dada un archivo y la lista de candidatos a formar pareje, llama a unas funciones auxiliar para crear 
+# las parejas dependiendo del genero de las personas en la lista
+# y devuelve las personas que se quedaron sin pareja
 def MatchingFunction(Salida, Candidatos):
     for key, value in Candidatos.items():
         Candidatos[key]['11a14'] = MatchingHomosexuals(Salida, value['11a14'], 'M') 
