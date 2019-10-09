@@ -1,3 +1,4 @@
-("ELIETH", "ARAYA", "ROSARIO",22, "M", "M") 
+("ELIETH", "ARAYA", "ROSARIO",22, "M", "M")
+{'Rosario':{'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}}
 ("ELIETH", "ARAYA", "ROSARIO",17, "M", "M")
 ("ELIETH", "ARAYA", "ROSARIO",14, "M", "M")
