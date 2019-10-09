@@ -21,8 +21,9 @@ def test_Agregar():
   persona3 = eval(Lineas1[3])
   resultado1 = eval(Lineas2[0])
   resultado2 = eval(Lineas2[1])
-  assert Agregar(persona1,candidatos1) == resultado1  
   assert Agregar(persona2,{}) ==  resultado2
+  assert Agregar(persona1,candidatos1) == resultado1  
+ 
 
 def test_MatchingFunction():
   Salida = open("salida-test", "w+")
