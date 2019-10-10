@@ -27,6 +27,7 @@ def MayorA(lista, cant, contador = 0):
     else:
         return MayorA(lista[1:], cant, contador + 1)    # Hace una recursividad con el contador+1 y la tail de la lista
 
+# ImprimeSingles: array(tuplas(str,str,str,int,str,str))
 # Dada una lista de personas, guarda en un archivo las personas que no pueden formar una pareja y el porque.
 def ImprimeSingles(NoParejas):
     ArchivoSalidaSolteros = input("Ingrese nombre del archivo que contendra a los solteros :")
@@ -41,7 +42,8 @@ def ImprimeSingles(NoParejas):
             SalidaSingles.write(string + "NO DISPONIBILIDAD DE PERSONAS" + "\n") # Imprime en el archivo la string auxiliar + La causa
     SalidaSingles.close()
 
-# AgregaALocalidad: Tupla(str,str,str,int,str,str) Dict()
+# Como ya filtramos por localidad, la lista de candidatos se reduce al diccionario por rango etarios, y la persona como la tupla con los 7 datos
+# AgregaALocalidad: Tupla(str,str,str,int,str,str) Dict(Dict(array(Tuplas(str,str,str,int,str,str))))
 # Dada una Persona y un diccionario que continen a las personas que vivien es dicha localidad
 # agrego a dicha persona a la lista que corresponde segun su edad y orientacion sexual
 def AgregaALocalidad(Persona, DictLocalidad):
@@ -52,8 +54,8 @@ def AgregaALocalidad(Persona, DictLocalidad):
     else:   # Si es mayor de 10 años y menor a 15:
         DictLocalidad['11a14'][Persona[4] + Persona[5]].append(Persona) # Agrega a esta persona a la lista dentro del diccionario dado por la key " Genero + GeneroInteres" que es un value del diccionario de edades, relacionado con la kay "11a14"
 
-# Representamos la estructura donde se guarda cada persona como el diccionario de candidatos que se menciona mas arriba
-# Agregar: Tupla(str,str,str,int,str,str) -> Dict() -> Dict()
+# Representamos la estructura donde se guarda cada persona como el diccionario de candidatos que se menciona mas arriba, y la persona como la tupla con los 7 datos
+# Agregar: Tupla(str,str,str,int,str,str) -> Dict(Dict(Dict(array(Tuplas(str,str,str,int,str,str))))) -> Dict(Dict(Dict(array(Tuplas(str,str,str,int,str,str)))))
 # Dada una persona y un diccionario que contiene a todos los candidatos a formar parejas
 # Agrega la persona al campo del diccionario  de la localidad a la que pertenece y de ser necesario 
 # Agrega otra key al diccionario y agrega la persona al campo.
@@ -65,7 +67,8 @@ def Agregar(Persona, Candidatos):
         AgregaALocalidad(Persona, Candidatos[Persona[2]])   # Ejecutamos AgregaLocalidad con la persona y el diccionario que acabamos de crear
     return Candidatos   # Retorna el diccionario con la persona agregada en su localidad correspondiente
 
-# MatchingHomosexuals: file Dict() str
+# En este caso la lista de candidatos es la de una localidad y de un rango etario correspondiente, por lo que solo nos quedaria un diccionario con las keys de generos y intereses, con el array correspondiete a cada una
+# MatchingHomosexuals: file Dict(array(Tuplas(str,str,str,int,str,str))) str
 # Dado un archivo, una lista con personas y un genero, imprime en el archivo dado las parejas que se formaron
 # En este caso todas las parejas van a ser del mismo genero, representado por el string
 def MatchingHomosexuals(Salida, listPersonas, generoPersonas):
@@ -82,7 +85,8 @@ def MatchingHomosexuals(Salida, listPersonas, generoPersonas):
         listPersonas[generoPersonas + 'A'].pop(0)               # Borramos a este bisexual
         Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")  # Imprime En el archivo la pareja
 
-# MatchingHeterosexuals: file Dict()
+# En este caso la lista de candidatos es la de una localidad y de un rango etario correspondiente, por lo que solo nos quedaria un diccionario con las keys de generos y intereses, con el array correspondiete a cada una
+# MatchingHeterosexuals: file Dict(array(Tuplas(str,str,str,int,str,str)))
 # Dado un archivo, una lista con personas, imprime en el archivo dado las parejas que se formaron
 # En este caso todas las parejas van a ser parejas heterosexuales
 def MatchingHeterosexuals(Salida, listPersonas):
@@ -107,7 +111,8 @@ def MatchingHeterosexuals(Salida, listPersonas):
             listPersonas['MA'].pop(0)    # Eliminamos el hombre que tomamos del array
             Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")  # Imprime En el archivo la pareja
 
-# MatchingBisexuals: file Dict()
+# En este caso la lista de candidatos es la de una localidad y de un rango etario correspondiente, por lo que solo nos quedaria un diccionario con las keys de generos y intereses, con el array correspondiete a cada una
+# MatchingBisexuals: file Dict(array(Tuplas(str,str,str,int,str,str)))
 # Dado un archivo, una lista con personas, imprime en el archivo dado las parejas que se formaron
 # En esta funcion, el resultado seran todas parejas de bisexuales
 def MatchingBisexuals(Salida, listPersonas):
@@ -130,8 +135,8 @@ def MatchingBisexuals(Salida, listPersonas):
         listPersonas['FA'].pop(0)           # Elimino a la mujer que acabo de tomar
         Salida.write(Persona1[0] + ", " + Persona1[1] + ", " + str(Persona1[3]) + " - " + Persona2[0] + ", " + Persona2[1] + ", " + str(Persona2[3]) + " - " + Persona2[2] + "\n")  # Imprime En el archivo la pareja
 
-# En este caso 
-# MatchingFunction: file -> Dict() -> Dict()
+# En este caso la lista de candidatos la representamos con la estructura de diccionarios mencionada arriba de todo
+# MatchingFunction: file -> Dict(Dict(Dict(array(Tuplas(str,str,str,int,str,str))))) -> Dict(Dict(Dict(array(Tuplas(str,str,str,int,str,str)))))
 # Dada un archivo y la lista de candidatos a formar pareje, llama a unas funciones auxiliar para crear 
 # las parejas dependiendo del genero de las personas en la lista
 # y devuelve las personas que se quedaron sin pareja

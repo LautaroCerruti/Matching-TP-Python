@@ -2,14 +2,16 @@ from TP import *
 from pytest import *
 # Casos de test (pytest) para el trabajo practico 1. 
 
+# Testeamos la foncion MayorA, evitamos el uso de archivo por la simpleza de esta funcion
 Lista_Llena = [1,2,3,4]
-
 def test_MayorA():
   assert MayorA(Lista_Llena,1) == True
   assert MayorA(Lista_Llena,5) == False
 
-
-
+# Testeamos la funcion Agregar
+# La entrada Consiste de las personas como una tupla de 6 valores ("Nombre", "Apellido", "Localidad", Edad, "Genero", "GeneroInteres")
+# Y de un diccionario de la forma candidatos{Localidad:{'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}}
+# La salida para revisar si funciono es un diccionario pero con la persona agregada en la posicion que corresponda sugun su localidad, edad y genero/interes
 def test_Agregar():
   Entrada1 = open("test1-1.txt", "r")
   Entrada2 = open("test1-2.txt", "r")
@@ -27,7 +29,9 @@ def test_Agregar():
   assert Agregar(persona1,candidatos1) == resultado1 
   assert Agregar(persona3,candidatos3) == resultado3 
  
-
+# Testeamos la funcion MatchingFunction
+# La entrada es diccionario de la forma candidatos{Localidad:{'11a14':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '15a17':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}, '18+':{'MM':[], 'MF':[], 'MA':[], 'FM':[], 'FF':[], 'FA':[]}}} con personas agregadas
+# La salida para revisar si funciono es un diccionario de la misma forma, pero ahora sin las personas con las que se podia formar parejas
 def test_MatchingFunction():
   Salida = open("salida-test", "w+")
   Entrada1 = open("test2-1.txt", "r")
