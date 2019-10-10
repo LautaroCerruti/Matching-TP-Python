@@ -163,7 +163,7 @@ def MatchingFunction(Salida, Candidatos):
 if __name__ == "__main__":
     ArchivoEntrada = input("Ingrese el nombre del archivo a leer: ")
     ArchivosParejas = input("Ingrese nombre del archivo que contendra a las parejas: ")
-    Entrada = open(ArchivoEntrada,"r")
+    Entrada = open(ArchivoEntrada,"r",encoding ="latin1")
     NoParejas = []  # Los que no tienen parejas los almacenaremos en una lista
     Candidatos = dict() # Creamos el diccionario para los candidatos
     Lineas = Entrada.readlines()    # Leemos todas las lineas del archivo
