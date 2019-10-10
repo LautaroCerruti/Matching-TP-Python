@@ -27,13 +27,17 @@ def test_Agregar():
 
 def test_MatchingFunction():
   Salida = open("salida-test", "w+")
-  Entrada1 = open("test3-1.txt", "r")
-  Entrada2 = open("test3-2.txt", "r")
+  Entrada1 = open("test2-1.txt", "r")
+  Entrada2 = open("test2-2.txt", "r")
   Lineas1 = Entrada1.readlines()
   Lineas2 = Entrada2.readlines()  
   lista1 = eval(Lineas1[0])
-  genero1 = eval(Lineas1[1])
-  lista2 = eval(Lineas1[2])
-  genero2 = eval(Lineas1[3])
-  lista3 = eval(Lineas1[4])
-  genero3 = eval(Lineas1[5])
+  lista2 = eval(Lineas1[1])
+  lista3 = eval(Lineas1[2])
+  resultado1 = eval(Lineas2[0])
+  resultado2 = eval(Lineas2[1])
+  resultado3 = eval(Lineas2[2])
+  assert MatchingFunction(Salida,lista1) == resultado1 #test de 3 hombres homosexuales
+  assert MatchingFunction(Salida,lista2) == resultado2 #test de 3 hombres homosexuales y bi
+  assert MatchingFunction(Salida,lista3) == resultado3 #test de 3 hombres homosecuales y 2 bi
+  
