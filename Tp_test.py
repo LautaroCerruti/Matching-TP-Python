@@ -34,7 +34,7 @@ def test_MatchingFunction():
   Entrada2 = open("test2-2.txt", "r")
   Lineas1 = Entrada1.readlines()
   Lineas2 = Entrada2.readlines()  
-  lista1 = eval(Lineas1[0])
+  lista1 = eval(Lineas1[0]) 
   lista2 = eval(Lineas1[1])
   lista3 = eval(Lineas1[2])
   lista4 = eval(Lineas1[3])
